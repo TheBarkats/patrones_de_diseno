@@ -1,0 +1,189 @@
+<div class="builder-container">
+  <!-- Encabezado -->
+  <div class="header">
+    <h1>🎮 Constructor de Computadores Gamer</h1>
+    <p class="subtitle">Patrón Builder - Construcción paso a paso</p>
+  </div>
+
+  <!-- Explicación del patrón -->
+  <div class="pattern-explanation">
+    <h3>📚 ¿Qué es el Patrón Builder?</h3>
+    <p>
+      El patrón Builder permite construir objetos complejos paso a paso.
+      En lugar de crear todo de una vez, separamos la construcción de la
+      representación, permitiendo que el mismo proceso cree diferentes
+      representaciones.
+    </p>
+    <div class="benefits">
+      <span>✅ Construcción flexible</span>
+      <span>✅ Código limpio</span>
+      <span>✅ Fácil mantenimiento</span>
+    </div>
+  </div>
+
+  <div class="content-wrapper">
+    <!-- Panel izquierdo: Configuraciones predefinidas -->
+    <div class="configurations-panel">
+      <h2>⚙️ Configuraciones Predefinidas</h2>
+      <div class="config-list">
+        <div
+          *ngFor="let config of configurations"
+          class="config-item"
+          [class.active]="selectedComputer === config.computer"
+          (click)="selectConfiguration(config.id)"
+        >
+          <div class="config-header">
+            <span class="config-name">{{ config.name }}</span>
+            <span class="config-type">{{ config.type }}</span>
+          </div>
+          <div class="config-price">${{ config.price.toLocaleString() }}</div>
+          <button
+            class="delete-btn"
+            (click)="deleteConfiguration(config.id); $event.stopPropagation()"
+            title="Eliminar configuración"
+          >
+            ✕
+          </button>
+        </div>
+      </div>
+
+      <!-- Botón para constructor personalizado -->
+      <button
+        class="toggle-custom-btn"
+        (click)="toggleCustomBuilder()"
+        [class.active]="showCustomBuilder"
+      >
+        {{ showCustomBuilder ? '✕ Cerrar Constructor' : '+ Constructor Personalizado' }}
+      </button>
+
+      <!-- Constructor personalizado -->
+      <div *ngIf="showCustomBuilder" class="custom-builder">
+        <h3>🛠️ Construye tu Computadora</h3>
+
+        <!-- Selector de Procesador -->
+        <div class="selector-group">
+          <label>Procesador:</label>
+          <select [(ngModel)]="customSpec.processor">
+            <option *ngFor="let proc of availableOptions.processors" [value]="proc">
+              {{ proc }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Selector de RAM -->
+        <div class="selector-group">
+          <label>Memoria RAM:</label>
+          <select [(ngModel)]="customSpec.ram">
+            <option *ngFor="let ram of availableOptions.rams" [value]="ram">
+              {{ ram }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Selector de GPU -->
+        <div class="selector-group">
+          <label>Tarjeta Gráfica:</label>
+          <select [(ngModel)]="customSpec.gpu">
+            <option *ngFor="let gpu of availableOptions.gpus" [value]="gpu">
+              {{ gpu }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Selector de Almacenamiento -->
+        <div class="selector-group">
+          <label>Almacenamiento:</label>
+          <select [(ngModel)]="customSpec.storage">
+            <option *ngFor="let storage of availableOptions.storages" [value]="storage">
+              {{ storage }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Selector de Fuente de Poder -->
+        <div class="selector-group">
+          <label>Fuente de Poder:</label>
+          <select [(ngModel)]="customSpec.powerSupply">
+            <option *ngFor="let psu of availableOptions.powerSupplies" [value]="psu">
+              {{ psu }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Botón de construcción -->
+        <button class="build-btn" (click)="buildCustomComputer()">
+          🔨 Construir Computadora
+        </button>
+
+        <!-- Mensaje de estado -->
+        <div *ngIf="buildMessage" [class]="'message ' + (buildMessage.includes('✅') ? 'success' : 'error')">
+          {{ buildMessage }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel derecho: Detalles del computador seleccionado -->
+    <div class="details-panel">
+      <div *ngIf="selectedComputer; else noSelection" class="computer-details">
+        <h2>💻 Especificaciones</h2>
+
+        <div class="spec-box">
+          <div class="spec-row">
+            <span class="spec-label">🖥️ Procesador:</span>
+            <span class="spec-value">{{ selectedComputer.processor }}</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">🧠 Memoria RAM:</span>
+            <span class="spec-value">{{ selectedComputer.ram }}</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">🎨 Tarjeta Gráfica:</span>
+            <span class="spec-value">{{ selectedComputer.gpu }}</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">💾 Almacenamiento:</span>
+            <span class="spec-value">{{ selectedComputer.storage }}</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">⚡ Fuente de Poder:</span>
+            <span class="spec-value">{{ selectedComputer.powerSupply }}</span>
+          </div>
+        </div>
+
+        <!-- Precio estimado -->
+        <div class="price-box">
+          <span class="price-label">Precio Estimado:</span>
+          <span class="price-value">${{ getSelectedPrice().toLocaleString() }}</span>
+        </div>
+
+        <!-- Información adicional -->
+        <div class="info-box">
+          <h3>ℹ️ Cómo funciona el Patrón Builder aquí:</h3>
+          <ul>
+            <li>
+              <strong>Paso 1:</strong> Selecciona cada componente
+              (procesador, RAM, GPU, etc.)
+            </li>
+            <li>
+              <strong>Paso 2:</strong> El Builder almacena cada selección
+            </li>
+            <li>
+              <strong>Paso 3:</strong> Al final, construye el computador
+              completo
+            </li>
+            <li>
+              <strong>Ventaja:</strong> No necesitas un constructor con 5
+              parámetros
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <ng-template #noSelection>
+        <div class="no-selection">
+          <p>📭 Selecciona una configuración o crea una personalizada</p>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>
