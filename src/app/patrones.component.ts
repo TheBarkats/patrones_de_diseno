@@ -13,7 +13,7 @@ import { RouterModule, Router } from '@angular/router';
 import { ComputerBuilderComponent } from './patrones/builder/computer-builder.component';
 import { UserAdapterComponent } from './patrones/adapter/user-adapter.component';
 import { GameMapComponent } from './patrones/flyweight/game-map.component';
-import { SportReservationComponent } from './patrones/observer/sports-reservation.component';
+import { SportsReservationComponent } from './patrones/observer/sports-reservation.component';
 import { SportsFacadeComponent } from './patrones/facade/sports-facade.component';
 
 interface PatternInfo {
@@ -35,7 +35,7 @@ interface PatternInfo {
     ComputerBuilderComponent,
     UserAdapterComponent,
     GameMapComponent,
-    SportReservationComponent,
+    SportsReservationComponent,
     SportsFacadeComponent,
   ],
   template: `
@@ -414,7 +414,7 @@ export class PatternsComponent implements OnInit {
         'Define una dependencia uno-a-muchos entre objetos. Sistema reactivo con actualizaciones automáticas en tiempo real.',
       emoji: '👁️',
       color: '#fbbf24',
-      component: SportReservationComponent,
+      component: SportsReservationComponent,
     },
     {
       id: 'facade',

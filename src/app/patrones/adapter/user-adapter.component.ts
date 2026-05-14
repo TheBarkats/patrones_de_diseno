@@ -100,7 +100,7 @@ export class UserAdapterComponent implements OnInit {
 
     this.searchResult = this.userAdapterService.getUserByEmail(
       this.searchEmail
-    );
+    ) ?? null;
   }
 
   /**

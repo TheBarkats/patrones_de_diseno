@@ -247,15 +247,7 @@
         <div class="sharing-info">
           <h3>♻️ Compartición de Datos</h3>
           <p>
-            Este árbol comparte su <strong>TreeType</strong> con
-            <strong>
-              {{
-                (treeTypes | pipe: (t: any) => t.name === selectedTree.getTreeTypeName() : [
-                  0
-                ])[0]?.count || 0
-              }}
-            </strong>
-            árboles más del mismo tipo.
+            Este árbol comparte su <strong>TreeType</strong> con otros árboles del mismo tipo.
           </p>
           <div class="sharing-stats">
             <div class="stat">
