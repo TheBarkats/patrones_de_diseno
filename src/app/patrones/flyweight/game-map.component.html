@@ -1,0 +1,295 @@
+<div class="flyweight-container">
+  <!-- Encabezado -->
+  <div class="header">
+    <h1>🎮 Mapa de Videojuego - Optimización con Flyweight</h1>
+    <p class="subtitle">Patrón Flyweight - Compartición de estado intrínseco</p>
+  </div>
+
+  <!-- Explicación del patrón -->
+  <div class="pattern-explanation">
+    <h3>📚 ¿Qué es el Patrón Flyweight?</h3>
+    <p>
+      Flyweight optimiza memoria compartiendo datos comunes entre muchos
+      objetos. Ideal para sistemas con miles de elementos similares.
+    </p>
+    <div class="key-concept">
+      <strong>Concepto Clave:</strong> Separar datos compartidos
+      (tipo, color, textura) de datos únicos (posición).
+    </div>
+  </div>
+
+  <!-- Panel de control -->
+  <div class="control-panel">
+    <h2>⚙️ Generador de Mapa</h2>
+
+    <div class="control-group">
+      <label>Número de Árboles:</label>
+      <div class="input-group">
+        <button (click)="decreaseTreeCount()" class="btn-decrease">−</button>
+        <input type="number" [(ngModel)]="treeCount" min="100" max="50000" />
+        <button (click)="increaseTreeCount()" class="btn-increase">+</button>
+      </div>
+      <span class="range-hint">Rango: 100 - 50,000 árboles</span>
+    </div>
+
+    <div class="button-group">
+      <button (click)="generateMap()" [disabled]="isMapGenerated" class="btn-primary">
+        🎮 Generar Mapa
+      </button>
+      <button (click)="clearMap()" [disabled]="!isMapGenerated" class="btn-secondary">
+        🗑️ Limpiar Mapa
+      </button>
+    </div>
+
+    <div *ngIf="isMapGenerated" class="status-message success">
+      ✅ Mapa generado exitosamente con {{ trees.length }} árboles
+    </div>
+  </div>
+
+  <div *ngIf="isMapGenerated" class="content-wrapper">
+    <!-- Panel izquierdo: Estadísticas -->
+    <div class="stats-section">
+      <h2>📊 Estadísticas de Memoria</h2>
+
+      <div *ngIf="memoryStats" class="stats-grid">
+        <!-- Total de árboles -->
+        <div class="stat-card primary">
+          <div class="stat-icon">🌲</div>
+          <div class="stat-label">Total de Árboles</div>
+          <div class="stat-value">{{ memoryStats.totalTrees | number }}</div>
+        </div>
+
+        <!-- Tipos de árboles -->
+        <div class="stat-card secondary">
+          <div class="stat-icon">🏷️</div>
+          <div class="stat-label">Tipos Diferentes</div>
+          <div class="stat-value">{{ memoryStats.totalTreeTypes }}</div>
+        </div>
+
+        <!-- Memoria sin Flyweight -->
+        <div class="stat-card warning">
+          <div class="stat-icon">💾</div>
+          <div class="stat-label">Memoria SIN Flyweight</div>
+          <div class="stat-value">{{ memoryStats.memoriaEstimadaSinFlyweight }}</div>
+        </div>
+
+        <!-- Memoria con Flyweight -->
+        <div class="stat-card success">
+          <div class="stat-icon">✅</div>
+          <div class="stat-label">Memoria CON Flyweight</div>
+          <div class="stat-value">{{ memoryStats.memoriaEstimadaConFlyweight }}</div>
+        </div>
+
+        <!-- Memoria ahorrada -->
+        <div class="stat-card highlight">
+          <div class="stat-icon">💰</div>
+          <div class="stat-label">Memoria Ahorrada</div>
+          <div class="stat-value">{{ memoryStats.memoriaAhorrada }}</div>
+        </div>
+
+        <!-- Porcentaje -->
+        <div class="stat-card achievement">
+          <div class="stat-icon">🎯</div>
+          <div class="stat-label">Eficiencia</div>
+          <div class="stat-value">{{ memoryStats.porcentajeAhorro }}%</div>
+        </div>
+      </div>
+
+      <!-- Explicación visual -->
+      <div class="memory-explanation">
+        <h3>💡 ¿Cómo funciona el ahorro?</h3>
+        <div class="memory-comparison">
+          <div class="comparison-col without">
+            <strong>❌ SIN Flyweight</strong>
+            <div class="memory-bar">
+              <div class="memory-segment" style="flex: 1">
+                <span>Tipo</span>
+                <span>+</span>
+                <span>Color</span>
+                <span>+</span>
+                <span>Textura</span>
+              </div>
+              <div class="memory-segment">
+                <span>X, Y</span>
+              </div>
+              <span class="multiply">× 10,000 árboles</span>
+            </div>
+          </div>
+          <div class="arrow">→</div>
+          <div class="comparison-col with">
+            <strong>✅ CON Flyweight</strong>
+            <div class="memory-bar">
+              <div class="memory-segment shared">
+                <span>TreeType</span>
+                <span>(1 vez)</span>
+              </div>
+              <div class="memory-segment">
+                <span>X, Y × 10,000</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Desglose por tipo -->
+      <div class="tree-types-info">
+        <h3>🌳 Árboles por Tipo</h3>
+        <div class="types-grid">
+          <div
+            *ngFor="let treeType of treeTypes"
+            class="type-card"
+            [style.border-left-color]="treeType.color"
+          >
+            <div class="type-name">{{ treeType.name }}</div>
+            <div class="type-count">{{ treeType.count }} árboles</div>
+            <div class="type-color-preview" [style.background-color]="treeType.color"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel central: Mapa visual -->
+    <div class="map-section">
+      <h2>🗺️ Visualización del Mapa</h2>
+
+      <!-- Filtro de tipo -->
+      <div class="filter-group">
+        <label>Filtrar por tipo:</label>
+        <select [(ngModel)]="selectedTreeType">
+          <option value="All">Todos los árboles</option>
+          <option *ngFor="let type of treeTypes" [value]="type.name">
+            {{ type.name }} ({{ type.count }})
+          </option>
+        </select>
+      </div>
+
+      <!-- Canvas con árboles -->
+      <svg
+        [attr.width]="mapWidth"
+        [attr.height]="mapHeight"
+        class="map-canvas"
+      >
+        <!-- Fondo del mapa -->
+        <rect width="100%" height="100%" fill="#1a472a" />
+
+        <!-- Rejilla opcional -->
+        <g stroke="#2d5e3f" stroke-width="1" opacity="0.2">
+          <line
+            *ngFor="let i of [0, 100, 200, 300, 400, 500, 600, 700, 800]"
+            [attr.x1]="i"
+            y1="0"
+            [attr.x2]="i"
+            [attr.y2]="mapHeight"
+          />
+          <line
+            *ngFor="let i of [0, 100, 200, 300, 400, 500, 600]"
+            x1="0"
+            [attr.y1]="i"
+            [attr.x2]="mapWidth"
+            [attr.y2]="i"
+          />
+        </g>
+
+        <!-- Árboles renderizados -->
+        <circle
+          *ngFor="let tree of getDisplayedTrees()"
+          [attr.cx]="tree.x"
+          [attr.cy]="tree.y"
+          [attr.r]="getTreeRadius()"
+          [attr.fill]="tree.getColor()"
+          [attr.class]="'tree ' + (selectedTree === tree ? 'selected' : '')"
+          (click)="selectTree(tree)"
+          title="{{ tree.getTreeTypeName() }}"
+        />
+      </svg>
+
+      <!-- Instrucciones -->
+      <div class="map-instructions">
+        <p>💡 Clica sobre un árbol para ver detalles</p>
+      </div>
+    </div>
+
+    <!-- Panel derecho: Detalles del árbol -->
+    <div class="details-section">
+      <h2>🌳 Detalles del Árbol</h2>
+
+      <div *ngIf="selectedTree; else noSelection" class="tree-details">
+        <div class="detail-box">
+          <div class="detail-row">
+            <span class="detail-label">Tipo:</span>
+            <span class="detail-value">{{ selectedTree.getTreeTypeName() }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Posición X:</span>
+            <span class="detail-value">{{ selectedTree.x | number : '1.2-2' }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Posición Y:</span>
+            <span class="detail-value">{{ selectedTree.y | number : '1.2-2' }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Color:</span>
+            <span class="detail-value">
+              <span
+                class="color-box"
+                [style.background-color]="selectedTree.getColor()"
+              ></span>
+              {{ selectedTree.getColor() }}
+            </span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Textura:</span>
+            <span class="detail-value">{{ selectedTree.getTexture() }}</span>
+          </div>
+        </div>
+
+        <!-- Información sobre compartición -->
+        <div class="sharing-info">
+          <h3>♻️ Compartición de Datos</h3>
+          <p>
+            Este árbol comparte su <strong>TreeType</strong> con
+            <strong>
+              {{
+                (treeTypes | pipe: (t: any) => t.name === selectedTree.getTreeTypeName() : [
+                  0
+                ])[0]?.count || 0
+              }}
+            </strong>
+            árboles más del mismo tipo.
+          </p>
+          <div class="sharing-stats">
+            <div class="stat">
+              <span class="label">Datos únicos (por árbol):</span>
+              <span class="value">X, Y = 8 bytes</span>
+            </div>
+            <div class="stat">
+              <span class="label">Datos compartidos (una vez):</span>
+              <span class="value">Tipo, Color, Textura = 27 bytes</span>
+            </div>
+            <div class="stat highlight">
+              <span class="label">Ahorro por árbol:</span>
+              <span class="value">74% de memoria</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #noSelection>
+        <div class="no-selection">
+          <p>👈 Clica en un árbol para ver detalles</p>
+        </div>
+      </ng-template>
+
+      <!-- Información del patrón -->
+      <div class="pattern-info">
+        <h3>ℹ️ Patrón Flyweight</h3>
+        <ul>
+          <li><strong>Problema:</strong> Miles de árboles = mucha memoria</li>
+          <li><strong>Solución:</strong> Compartir tipos entre instancias</li>
+          <li><strong>Resultado:</strong> 74-90% de ahorro</li>
+          <li><strong>Uso real:</strong> Videojuegos, mapas, simulaciones</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
