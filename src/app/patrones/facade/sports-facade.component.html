@@ -1,0 +1,308 @@
+<div class="facade-container">
+  <!-- Encabezado -->
+  <div class="header">
+    <h1>🏟️ Sistema de Reservas Deportivas - Fachada</h1>
+    <p class="subtitle">Patrón Facade - Simplificación de Complejidad</p>
+  </div>
+
+  <!-- Explicación del patrón -->
+  <div class="pattern-explanation">
+    <h3>📚 ¿Qué es el Patrón Facade?</h3>
+    <p>
+      Facade proporciona una interfaz unificada a un conjunto de interfaces complejas.
+      Simplifica la interacción ocultando los subsistemas detrás de una fachada.
+    </p>
+    <div class="complexity-comparison">
+      <div class="without">
+        <strong>❌ Sin Facade:</strong>
+        <div class="steps">
+          <div>1. Validar usuario</div>
+          <div>2. Verificar disponibilidad</div>
+          <div>3. Procesar pago</div>
+          <div>4. Confirmar reserva</div>
+          <div class="note">Cliente: Complejo y acoplado</div>
+        </div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="with">
+        <strong>✅ Con Facade:</strong>
+        <div class="steps">
+          <div>facade.createReservation(...)</div>
+          <div class="note">Cliente: Simple y desacoplado</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-wrapper">
+    <!-- Panel izquierdo: Formulario de reserva -->
+    <div class="form-section">
+      <h2>📋 Crear Reserva</h2>
+
+      <!-- Selección de usuario -->
+      <div class="form-group">
+        <label>👤 Usuario:</label>
+        <select [(ngModel)]="selectedUserId">
+          <option *ngFor="let user of users" [value]="user.id">
+            {{ user.name }} {{ user.isPremium ? '⭐ (Premium)' : '' }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Información del usuario -->
+      <div *ngIf="getSelectedUser(); let user = getSelectedUser" class="user-info">
+        <div class="info-item">
+          <span class="label">Email:</span>
+          <span class="value">{{ user.email }}</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Teléfono:</span>
+          <span class="value">{{ user.phone }}</span>
+        </div>
+        <div *ngIf="user.isPremium" class="premium-badge">
+          ⭐ Usuario Premium - 10% descuento
+        </div>
+      </div>
+
+      <!-- Selección de cancha -->
+      <div class="form-group">
+        <label>🏟️ Cancha:</label>
+        <select [(ngModel)]="selectedFacilityId">
+          <option *ngFor="let facility of facilities" [value]="facility.id">
+            {{ facility.name }} - ${{ facility.hourlyRate }}/hora
+          </option>
+        </select>
+      </div>
+
+      <!-- Información de cancha -->
+      <div *ngIf="getSelectedFacility(); let facility = getSelectedFacility" class="facility-info">
+        <div class="info-item">
+          <span class="label">Tipo:</span>
+          <span class="value">{{ facility.type }}</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Tarifa:</span>
+          <span class="value">${{ facility.hourlyRate }}/hora</span>
+        </div>
+      </div>
+
+      <!-- Selección de fecha -->
+      <div class="form-group">
+        <label>📅 Fecha:</label>
+        <input type="date" [(ngModel)]="selectedDate" />
+      </div>
+
+      <!-- Selección de duración -->
+      <div class="form-group">
+        <label>⏱️ Duración (horas):</label>
+        <input
+          type="number"
+          [(ngModel)]="selectedDuration"
+          min="1"
+          max="8"
+          step="1"
+        />
+      </div>
+
+      <!-- Precio estimado -->
+      <div class="price-box">
+        <span class="label">💰 Precio Estimado:</span>
+        <span class="price">${{ getEstimatedPrice().toFixed(2) }}</span>
+      </div>
+
+      <!-- Botón de reserva -->
+      <button
+        (click)="createReservation()"
+        [disabled]="isLoading"
+        class="btn-reserve"
+      >
+        {{ isLoading ? '⏳ Procesando...' : '✓ Crear Reserva' }}
+      </button>
+
+      <!-- Detalles del proceso -->
+      <button (click)="toggleDetails()" class="btn-details">
+        {{ showDetails ? '✕ Ocultar Proceso' : '📝 Ver Proceso' }}
+      </button>
+
+      <div *ngIf="showDetails" class="process-details">
+        <h3>🔄 Pasos del Proceso (Dentro de la Facade):</h3>
+        <ol>
+          <li><strong>Validar Usuario:</strong> Verifica que el usuario exista y sea válido</li>
+          <li><strong>Verificar Disponibilidad:</strong> Confirma que la cancha esté libre</li>
+          <li><strong>Procesar Pago:</strong> Realiza la transacción de pago</li>
+          <li><strong>Confirmar Reserva:</strong> Registra la reserva en el sistema</li>
+          <li><strong>Notificar:</strong> Envía confirmación por email</li>
+        </ol>
+        <p class="note">
+          ⚠️ Todo esto sucede DENTRO de la Facade.
+          <br />El componente NO ve estos detalles.
+        </p>
+      </div>
+    </div>
+
+    <!-- Panel derecho: Resultado -->
+    <div class="result-section">
+      <h2>📊 Resultado de Operación</h2>
+
+      <div *ngIf="showResult; else noResult">
+        <div
+          *ngIf="reservationResult; let result = reservationResult"
+          [class]="'result-box ' + (result.success ? 'success' : 'error')"
+        >
+          <div class="result-header">
+            {{ result.success ? '✅ Éxito' : '❌ Error' }}
+          </div>
+
+          <div class="result-message">
+            {{ result.message }}
+          </div>
+
+          <div *ngIf="result.success && result.details" class="result-details">
+            <div class="detail-row">
+              <span class="label">Cancha:</span>
+              <span class="value">{{ result.details.facilityName }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">Usuario:</span>
+              <span class="value">{{ result.details.userName }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">Monto Pagado:</span>
+              <span class="value">${{ result.details.amount.toFixed(2) }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">Fecha:</span>
+              <span class="value">{{ result.details.date }}</span>
+            </div>
+            <div class="detail-row" *ngIf="result.reservation">
+              <span class="label">ID Reserva:</span>
+              <span class="value">{{ result.reservation.id }}</span>
+            </div>
+          </div>
+
+          <div *ngIf="!result.success && result.error" class="error-details">
+            <strong>Error:</strong> {{ result.error }}
+          </div>
+        </div>
+      </div>
+
+      <ng-template #noResult>
+        <div class="no-result">
+          <p>👈 Completa el formulario y haz clic en "Crear Reserva"</p>
+        </div>
+      </ng-template>
+
+      <!-- Historial de reservas -->
+      <div class="history-section">
+        <h3>📚 Historial de Reservas</h3>
+        <button
+          (click)="clearHistory()"
+          [disabled]="reservationHistory.length === 0"
+          class="btn-clear"
+        >
+          🗑️ Limpiar Historial
+        </button>
+
+        <div class="history-list">
+          <div *ngIf="reservationHistory.length === 0" class="empty-history">
+            <p>Sin historial de reservas</p>
+          </div>
+
+          <div
+            *ngFor="let entry of reservationHistory"
+            class="history-item"
+            [class]="entry.success ? 'success' : 'error'"
+          >
+            <div class="history-header">
+              {{ entry.success ? '✅' : '❌' }} {{ entry.details?.facilityName }}
+            </div>
+            <div class="history-detail">
+              <span>Usuario:</span>
+              <span>{{ entry.details?.userName }}</span>
+            </div>
+            <div class="history-detail">
+              <span>Monto:</span>
+              <span>${{ entry.details?.amount.toFixed(2) }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel inferior: Información del patrón -->
+  <div class="pattern-info-section">
+    <h2>ℹ️ Detalles del Patrón Facade</h2>
+
+    <div class="info-grid">
+      <div class="info-card">
+        <h3>¿Qué es?</h3>
+        <p>
+          Un patrón que proporciona una interfaz unificada a un conjunto de
+          interfaces complejas en un subsistema.
+        </p>
+      </div>
+
+      <div class="info-card">
+        <h3>Problema Resuelto</h3>
+        <p>
+          Cuando tienes múltiples servicios que necesitan coordinación, el
+          cliente no debería conocer todos los detalles de implementación.
+        </p>
+      </div>
+
+      <div class="info-card">
+        <h3>Ventajas</h3>
+        <ul>
+          <li>Simplifica interfaces complejas</li>
+          <li>Desacoplamiento entre cliente y subsistemas</li>
+          <li>Fácil de mantener y testear</li>
+          <li>Centraliza lógica de coordinación</li>
+        </ul>
+      </div>
+
+      <div class="info-card">
+        <h3>En Esta Aplicación</h3>
+        <p>
+          La <strong>ReservationFacade</strong> coordina internamente:
+        </p>
+        <ul>
+          <li>UserValidationService</li>
+          <li>AvailabilityService</li>
+          <li>PaymentService</li>
+          <li>ReservationService</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="architecture-box">
+      <h3>🏗️ Arquitectura</h3>
+      <div class="architecture-diagram">
+        <div class="client">Cliente (Componente)</div>
+        <div class="arrow">↓ Llama</div>
+        <div class="facade">ReservationFacade</div>
+        <div class="arrow">↓ Coordina</div>
+        <div class="subsystems">
+          <div class="subsystem">UserValidation</div>
+          <div class="subsystem">Availability</div>
+          <div class="subsystem">Payment</div>
+          <div class="subsystem">Reservation</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="code-example">
+      <h3>📝 Ejemplo de Uso</h3>
+      <pre><code>// El cliente solo necesita esto:
+const result = this.facade.createReservation(
+  userId,
+  facilityId,
+  date,
+  duration
+);
+
+// ¡La Facade hace todo lo demás!</code>
+      </pre>
+    </div>
+  </div>
+</div>
