@@ -2,7 +2,7 @@
 
 ## Descripción del Proyecto
 
-Este proyecto es un taller universitario completo que implementa **10 patrones de diseño de software** con ejemplos funcionales y reales en **Angular 17+** con **TypeScript**.
+Este proyecto es un taller que implementa **10 patrones de diseño de software** con ejemplos funcionales y reales en **Angular 17+** con **TypeScript**.
 
 Cada patrón incluye:
 -  Implementación completa del patrón
@@ -254,7 +254,7 @@ Juan Camilo Giraldo
 
 ---
 
-## 📚 Referencias
+##  Referencias
 
 - [Gang of Four Design Patterns](https://refactoring.guru/design-patterns)
 - [Angular Official Documentation](https://angular.io)
@@ -263,7 +263,7 @@ Juan Camilo Giraldo
 
 ---
 
-## ⚖️ Licencia
+##  Licencia
 
 Este proyecto es de carácter educativo para uso académico.
 
