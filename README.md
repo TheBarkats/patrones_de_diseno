@@ -171,11 +171,21 @@ src/app/patrones/
 ##  Instalación y Ejecución
 
 ### Requisitos Previos
-- **Node.js** v18+
-- **npm** o **yarn**
-- **Angular CLI** v17+
+- **Node.js** v18+ ([Descargar](https://nodejs.org/))
+- **npm** v9+ (incluido con Node.js)
+- **Git** (opcional, para clonar el repositorio)
 
-### Pasos para ejecutar
+### Verificar la instalación
+
+```bash
+# Verificar Node.js
+node --version  # Debe ser v18 o mayor
+
+# Verificar npm
+npm --version   # Debe ser v9 o mayor
+```
+
+### Instalación Paso a Paso
 
 1. **Navegar al directorio del proyecto:**
    ```bash
@@ -186,16 +196,78 @@ src/app/patrones/
    ```bash
    npm install
    ```
+   > Esto descargará e instalará Angular 17+ y todas sus dependencias (puede tomar 2-3 minutos)
 
-3. **Iniciar el servidor de desarrollo:**
+3. **Instalar Angular CLI globalmente (opcional pero recomendado):**
    ```bash
-   ng serve
+   npm install -g @angular/cli@17
    ```
 
-4. **Abrir en el navegador:**
-   ```
-   http://localhost:4200
-   ```
+### Ejecutar la Aplicación
+
+**Opción 1: Comando npm (recomendado)**
+```bash
+npm start
+```
+
+**Opción 2: Comando Angular CLI**
+```bash
+ng serve --open
+```
+
+**Opción 3: Desarrollo con auto-recargar**
+```bash
+npm run dev
+```
+
+### Acceder a la Aplicación
+
+Una vez ejecutado, la aplicación abrirá automáticamente en:
+```
+http://localhost:4200
+```
+
+Si no se abre automáticamente, accede manualmente a esa URL en tu navegador.
+
+### Comandos Disponibles
+
+```bash
+# Iniciar servidor de desarrollo
+npm start
+
+# Construir para producción
+npm run build
+
+# Ejecutar tests unitarios
+npm test
+
+# Formatear código
+npm run format
+
+# Ver ayuda de Angular CLI
+ng help
+```
+
+### Solución de Problemas
+
+**Error: "ng: command not found"**
+```bash
+# Solución: Instalar Angular CLI globalmente
+npm install -g @angular/cli@17
+```
+
+**Error: "Module not found"**
+```bash
+# Solución: Reinstalar dependencias
+rm -rf node_modules package-lock.json
+npm install
+```
+
+**Error: "Port 4200 already in use"**
+```bash
+# Solución: Usar un puerto diferente
+ng serve --port 4300
+```
 
 ---
 
