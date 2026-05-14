@@ -1,0 +1,214 @@
+<div class="adapter-container">
+  <!-- Encabezado -->
+  <div class="header">
+    <h1>🔌 Adapter de Usuario - API Antigua a Moderna</h1>
+    <p class="subtitle">Patrón Adapter - Integración de APIs incompatibles</p>
+  </div>
+
+  <!-- Explicación del patrón -->
+  <div class="pattern-explanation">
+    <h3>📚 ¿Qué es el Patrón Adapter?</h3>
+    <p>
+      El patrón Adapter permite que interfaces incompatibles trabajen juntas.
+      Es como un adaptador de corriente: convierte un formato de entrada a otro
+      sin que el usuario sepa que existe la conversión.
+    </p>
+    <div class="problem-solution">
+      <div class="problem">
+        <strong>❌ Problema:</strong>
+        <p>API antigua devuelve:<br /><code>{ nombre_completo, correo, fecha_creacion }</code></p>
+      </div>
+      <div class="arrow">→</div>
+      <div class="solution">
+        <strong>✅ Solución:</strong>
+        <p>App espera:<br /><code>{ fullName, email, createdAt }</code></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-wrapper">
+    <!-- Panel izquierdo: Lista de usuarios -->
+    <div class="users-panel">
+      <h2>👥 Usuarios Adaptados</h2>
+      <p class="info-text">
+        Estos usuarios vienen de una API antigua, pero gracias al Adapter se
+        muestran en formato moderno.
+      </p>
+
+      <div class="users-list">
+        <div
+          *ngFor="let user of modernUsers"
+          class="user-item"
+          [class.active]="selectedUser === user"
+          (click)="selectUser(user)"
+        >
+          <div class="user-name">{{ user.fullName }}</div>
+          <div class="user-email">{{ user.email }}</div>
+        </div>
+      </div>
+
+      <!-- Búsqueda de usuario -->
+      <div class="search-section">
+        <h3>🔍 Buscar Usuario</h3>
+        <div class="search-box">
+          <input
+            [(ngModel)]="searchEmail"
+            placeholder="Ingresa un email"
+            (keyup.enter)="searchUser()"
+            class="search-input"
+          />
+          <button (click)="searchUser()" class="search-btn">Buscar</button>
+        </div>
+
+        <div *ngIf="searchResult" class="search-result">
+          <strong>✅ Usuario encontrado:</strong>
+          <div class="result-item">
+            <span>{{ searchResult.fullName }}</span>
+            <span>{{ searchResult.email }}</span>
+          </div>
+        </div>
+
+        <div *ngIf="searchEmail && !searchResult" class="search-result error">
+          <strong>❌ Usuario no encontrado</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel central: Detalles del usuario -->
+    <div class="details-panel">
+      <div *ngIf="selectedUser; else noSelection" class="user-details">
+        <h2>📋 Detalles del Usuario</h2>
+
+        <div class="detail-box">
+          <div class="detail-row">
+            <span class="detail-label">👤 Nombre Completo:</span>
+            <span class="detail-value">{{ selectedUser.fullName }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">📧 Email:</span>
+            <span class="detail-value">{{ selectedUser.email }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">📅 Fecha de Creación:</span>
+            <span class="detail-value">{{ formatDate(selectedUser.createdAt) }}</span>
+          </div>
+        </div>
+
+        <!-- Comparación formato antiguo vs moderno -->
+        <div class="comparison-section">
+          <button (click)="toggleComparison()" class="toggle-comparison-btn">
+            {{ showComparison ? '✕ Ocultar Comparación' : '🔄 Ver Formato Original' }}
+          </button>
+
+          <div *ngIf="showComparison" class="format-comparison">
+            <h3>🔀 Comparación de Formatos</h3>
+
+            <div class="comparison-box">
+              <div class="format-column legacy">
+                <h4>🗂️ Formato Antiguo (Legacy)</h4>
+                <div class="format-content">
+                  <div class="format-line">
+                    <span class="key">nombre_completo:</span>
+                    <span class="value">{{ getLegacyFormatVersion(selectedUser).nombre_completo }}</span>
+                  </div>
+                  <div class="format-line">
+                    <span class="key">correo:</span>
+                    <span class="value">{{ getLegacyFormatVersion(selectedUser).correo }}</span>
+                  </div>
+                  <div class="format-line">
+                    <span class="key">fecha_creacion:</span>
+                    <span class="value">{{ getLegacyFormatVersion(selectedUser).fecha_creacion }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="comparison-arrow">
+                <div class="arrow-line">→</div>
+                <div class="arrow-text">Adapter</div>
+                <div class="arrow-line">→</div>
+              </div>
+
+              <div class="format-column modern">
+                <h4>✨ Formato Moderno</h4>
+                <div class="format-content">
+                  <div class="format-line">
+                    <span class="key">fullName:</span>
+                    <span class="value">{{ selectedUser.fullName }}</span>
+                  </div>
+                  <div class="format-line">
+                    <span class="key">email:</span>
+                    <span class="value">{{ selectedUser.email }}</span>
+                  </div>
+                  <div class="format-line">
+                    <span class="key">createdAt:</span>
+                    <span class="value">{{ selectedUser.createdAt.toISOString() }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Información del patrón -->
+        <div class="pattern-info">
+          <h3>ℹ️ Cómo Funciona el Adapter</h3>
+          <ol>
+            <li><strong>API Antigua</strong> devuelve datos con propiedades en español</li>
+            <li><strong>UserAdapter</strong> convierte cada propiedad:
+              <ul>
+                <li>nombre_completo → fullName</li>
+                <li>correo → email</li>
+                <li>fecha_creacion (string) → createdAt (Date)</li>
+              </ul>
+            </li>
+            <li><strong>App Angular</strong> recibe datos listos para usar</li>
+            <li><strong>Ventaja:</strong> Si la API antigua cambia, solo cambias el Adapter</li>
+          </ol>
+        </div>
+      </div>
+
+      <ng-template #noSelection>
+        <div class="no-selection">
+          <p>👈 Selecciona un usuario para ver detalles</p>
+        </div>
+      </ng-template>
+    </div>
+
+    <!-- Panel derecho: Estadísticas -->
+    <div class="stats-panel">
+      <h2>📊 Estadísticas</h2>
+
+      <div *ngIf="statistics" class="stats-content">
+        <div class="stat-box">
+          <div class="stat-label">Total de Usuarios</div>
+          <div class="stat-value">{{ statistics.totalUsers }}</div>
+        </div>
+
+        <div class="stat-box" *ngIf="statistics.oldestUser">
+          <div class="stat-label">👴 Usuario Más Antiguo</div>
+          <div class="stat-text">{{ statistics.oldestUser.fullName }}</div>
+          <div class="stat-subtext">{{ formatDate(statistics.oldestUser.createdAt) }}</div>
+        </div>
+
+        <div class="stat-box" *ngIf="statistics.newestUser">
+          <div class="stat-label">👶 Usuario Más Reciente</div>
+          <div class="stat-text">{{ statistics.newestUser.fullName }}</div>
+          <div class="stat-subtext">{{ formatDate(statistics.newestUser.createdAt) }}</div>
+        </div>
+      </div>
+
+      <!-- Beneficios del patrón -->
+      <div class="benefits-box">
+        <h3>✨ Beneficios del Adapter</h3>
+        <ul>
+          <li>✅ Integra APIs incompatibles</li>
+          <li>✅ No modifica código antiguo</li>
+          <li>✅ Cambios centralizados</li>
+          <li>✅ Fácil de testear</li>
+          <li>✅ Escalable a múltiples fuentes</li>
+          <li>✅ Encapsulación de detalles</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
