@@ -1,0 +1,251 @@
+<div class="observer-container">
+  <!-- Encabezado -->
+  <div class="header">
+    <h1>🏐 Sistema de Notificaciones - Reservas de Canchas</h1>
+    <p class="subtitle">Patrón Observer - Reactividad en tiempo real con RxJS</p>
+  </div>
+
+  <!-- Explicación del patrón -->
+  <div class="pattern-explanation">
+    <h3>📚 ¿Qué es el Patrón Observer?</h3>
+    <p>
+      Observer automatiza notificaciones: cuando algo cambia, todos los
+      interesados lo saben inmediatamente. Angular usa esto con RxJS Observables.
+    </p>
+    <div class="observer-flow">
+      <div class="flow-step">Service</div>
+      <div class="flow-arrow">→ Emite</div>
+      <div class="flow-step">Observable</div>
+      <div class="flow-arrow">→ Notifica</div>
+      <div class="flow-step">Components</div>
+    </div>
+  </div>
+
+  <div class="content-wrapper">
+    <!-- Panel izquierdo: Control y estadísticas -->
+    <div class="control-section">
+      <h2>⚙️ Panel de Control</h2>
+
+      <!-- Estado de suscriptores -->
+      <div class="subscribers-box">
+        <div class="subscriber-stat">
+          <span class="label">👥 Suscriptores Activos:</span>
+          <span class="value">{{ activeSubscribers }}</span>
+        </div>
+      </div>
+
+      <!-- Selector de cancha -->
+      <div class="control-group">
+        <label>Selecciona Cancha:</label>
+        <select [(ngModel)]="selectedCourtId">
+          <option *ngFor="let court of courts" [value]="court.id">
+            {{ court.name }} ({{ court.sport }})
+          </option>
+        </select>
+      </div>
+
+      <!-- Selector de estado -->
+      <div class="control-group">
+        <label>Nuevo Estado:</label>
+        <select [(ngModel)]="selectedStatus">
+          <option value="Disponible">✅ Disponible</option>
+          <option value="Ocupada">❌ Ocupada</option>
+          <option value="Mantenimiento">🔧 Mantenimiento</option>
+        </select>
+      </div>
+
+      <!-- Botón de actualización -->
+      <button (click)="updateCourtStatus()" class="btn-update">
+        🔄 Actualizar Estado
+      </button>
+
+      <!-- Auto-actualizaciones -->
+      <div class="auto-update-box">
+        <label class="checkbox-label">
+          <input
+            type="checkbox"
+            [(ngModel)]="autoUpdatesEnabled"
+            (change)="toggleAutoUpdates()"
+          />
+          <span>🎲 Actualizaciones Automáticas</span>
+        </label>
+        <input
+          *ngIf="autoUpdatesEnabled"
+          type="number"
+          [(ngModel)]="autoUpdateInterval"
+          min="1000"
+          step="1000"
+          placeholder="Intervalo (ms)"
+          class="interval-input"
+        />
+      </div>
+
+      <!-- Botón limpiar -->
+      <button (click)="clearNotifications()" class="btn-clear">
+        🗑️ Limpiar Notificaciones
+      </button>
+
+      <!-- Explicación -->
+      <div class="explanation-box">
+        <h3>💡 Cómo funciona</h3>
+        <ol>
+          <li>Selecciona una cancha</li>
+          <li>Elige un nuevo estado</li>
+          <li>Haz clic en "Actualizar"</li>
+          <li>El servicio emite el cambio</li>
+          <li>Todos los suscritos lo reciben</li>
+          <li>Las notificaciones aparecen</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- Panel central: Canchas y su estado -->
+    <div class="courts-section">
+      <h2>🏟️ Estado de Canchas</h2>
+      <p class="section-hint">
+        Observa cómo los cambios se propagan en tiempo real
+      </p>
+
+      <div class="courts-grid">
+        <div *ngFor="let court of courts" class="court-card" [class]="court.status.toLowerCase().replace(' ', '-')">
+          <div class="court-header">
+            <div class="court-name">{{ court.name }}</div>
+            <div class="court-sport">{{ court.sport }}</div>
+          </div>
+
+          <div class="court-details">
+            <div class="detail">
+              <span class="label">Ubicación:</span>
+              <span class="value">{{ court.location }}</span>
+            </div>
+            <div class="detail">
+              <span class="label">Estado:</span>
+              <span class="value status" [class]="court.status.toLowerCase().replace(' ', '-')">
+                {{ getStatusIcon(court.status) }} {{ court.status }}
+              </span>
+            </div>
+            <div class="detail">
+              <span class="label">Actualizado:</span>
+              <span class="value">{{ court.lastUpdated | date : 'HH:mm:ss' }}</span>
+            </div>
+          </div>
+
+          <div class="court-footer">
+            <button
+              (click)="selectedCourtId = court.id"
+              [class.active]="selectedCourtId === court.id"
+              class="btn-select"
+            >
+              {{ selectedCourtId === court.id ? '✓ Seleccionado' : 'Seleccionar' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel derecho: Notificaciones -->
+    <div class="notifications-section">
+      <h2>🔔 Notificaciones en Tiempo Real</h2>
+      <p class="section-hint">
+        Últimas notificaciones recibidas por los observers
+      </p>
+
+      <div class="notifications-container">
+        <div
+          *ngIf="notifications.length === 0"
+          class="no-notifications"
+        >
+          <p>📭 Sin notificaciones aún</p>
+        </div>
+
+        <div
+          *ngFor="let notification of notifications"
+          class="notification-item"
+          [class]="notification.type"
+        >
+          <div class="notification-header">
+            <span class="notification-court">{{ notification.courtName }}</span>
+            <span class="notification-time">{{ notification.timestamp | date : 'HH:mm:ss' }}</span>
+          </div>
+          <div class="notification-message">
+            {{ notification.message }}
+          </div>
+          <div class="notification-status" [class]="notification.status.toLowerCase().replace(' ', '-')">
+            Estado: {{ notification.status }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Estadísticas de notificaciones -->
+      <div class="notifications-stats">
+        <div class="stat">
+          <span class="label">Total Notificaciones:</span>
+          <span class="value">{{ notifications.length }}</span>
+        </div>
+        <div class="stat">
+          <span class="label">Últimas 10:</span>
+          <span class="value">{{ recentNotifications.length }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel inferior: Información del patrón -->
+  <div class="pattern-info-section">
+    <h2>ℹ️ Detalles del Patrón Observer</h2>
+
+    <div class="info-grid">
+      <div class="info-card">
+        <h3>¿Qué es?</h3>
+        <p>
+          Un patrón que define una relación de uno-a-muchos entre objetos.
+          Cuando uno cambia de estado, todos los dependientes se actualizan
+          automáticamente.
+        </p>
+      </div>
+
+      <div class="info-card">
+        <h3>¿Cómo funciona?</h3>
+        <ul>
+          <li><strong>Subject:</strong> Publica cambios</li>
+          <li><strong>Observer:</strong> Se suscribe a cambios</li>
+          <li><strong>Observable:</strong> Fuente de datos reactiva</li>
+          <li><strong>Subscribe:</strong> Se convierte en observer</li>
+        </ul>
+      </div>
+
+      <div class="info-card">
+        <h3>Ventajas</h3>
+        <ul>
+          <li>✅ Desacoplamiento completo</li>
+          <li>✅ Actualizaciones automáticas</li>
+          <li>✅ Escalable a muchos observers</li>
+          <li>✅ Reactividad nativa Angular</li>
+        </ul>
+      </div>
+
+      <div class="info-card">
+        <h3>Uso en Angular</h3>
+        <ul>
+          <li><strong>RxJS:</strong> Observable, Subject, pipe</li>
+          <li><strong>Subscribe:</strong> Haces observer</li>
+          <li><strong>Unsubscribe:</strong> Dejas de observar</li>
+          <li><strong>Operators:</strong> Transforman datos</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="rxjs-example">
+      <h3>📝 Ejemplo de Código</h3>
+      <pre><code>// En el servicio:
+private notificationSubject = new Subject&lt;Notification&gt;();
+public notifications$ = this.notificationSubject.asObservable();
+
+notificationSubject.next(newNotification); // Emitir
+
+// En el componente:
+this.service.notifications$.subscribe(notif =&gt; {{'{'}}</code>
+      </pre>
+    </div>
+  </div>
+</div>
