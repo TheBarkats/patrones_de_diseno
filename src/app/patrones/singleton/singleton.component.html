@@ -1,0 +1,15 @@
+<div class="container">
+  <h1>🔒 Patrón SINGLETON</h1>
+  <p>Garantiza una única instancia de una clase durante toda la ejecución.</p>
+
+  <div class="controls">
+    <button (click)="testInstances()" class="btn btn-primary">
+      Verificar Instancia Única
+    </button>
+    <button (click)="demonstrate()" class="btn btn-secondary">
+      Demostración
+    </button>
+  </div>
+
+  <pre *ngIf="result" class="result">{{ result }}</pre>
+</div>
