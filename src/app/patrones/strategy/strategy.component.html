@@ -1,0 +1,80 @@
+<div class="strategy-container">
+  <div class="header">
+    <h1>💳 Patrón STRATEGY</h1>
+    <p class="description">Encapsula diferentes estrategias de pago intercambiables.</p>
+  </div>
+
+  <div class="section cart-section">
+    <h3>🛒 Carrito de Compras</h3>
+    <div class="cart-items">
+      <div *ngFor="let item of cartItems; let i = index" class="cart-item">
+        <div class="item-info">
+          <span class="item-name">{{ item.name }}</span>
+          <span class="item-price">${{ item.price }}</span>
+        </div>
+        <button (click)="removeItem(i)" class="btn-remove" title="Eliminar">
+          ✕
+        </button>
+      </div>
+      <p *ngIf="cartItems.length === 0" class="empty">Tu carrito está vacío</p>
+    </div>
+    <div class="cart-total" *ngIf="cartItems.length > 0">
+      <span class="label">Total a pagar:</span>
+      <span class="amount">${{ getTotal() }}</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>➕ Agregar Producto</h3>
+    <div class="add-product-group">
+      <select [(ngModel)]="selectedProduct" class="select">
+        <option value="">Selecciona un producto</option>
+        <option value="laptop">💻 Laptop - $800</option>
+        <option value="mouse">🖱️ Mouse - $25</option>
+        <option value="keyboard">⌨️ Teclado - $100</option>
+        <option value="monitor">🖥️ Monitor - $300</option>
+      </select>
+      <button (click)="addProduct()" class="btn btn-add">➕ Agregar</button>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>💳 Selecciona Método de Pago</h3>
+    <div class="payment-methods">
+      <button
+        *ngFor="let method of paymentMethods"
+        (click)="selectPaymentMethod(method)"
+        [class.active]="selectedPaymentMethod === method"
+        class="btn btn-payment"
+        [attr.title]="'Pagar con ' + method"
+      >
+        <span class="payment-emoji">{{ getPaymentMethodEmoji(method) }}</span>
+        <span class="payment-text">{{ method }}</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="section checkout-section">
+    <button
+      (click)="checkout()"
+      [disabled]="cartItems.length === 0 || !selectedPaymentMethod"
+      class="btn btn-checkout"
+    >
+      ✓ Procesar Pago
+    </button>
+  </div>
+
+  <div class="section" *ngIf="checkoutResult">
+    <h3>Resultado de Transacción</h3>
+    <div class="result">✅ {{ checkoutResult }}</div>
+  </div>
+
+  <div class="section" *ngIf="transactionHistory.length > 0">
+    <h3>📜 Historial de Transacciones</h3>
+    <div class="history-list">
+      <div *ngFor="let transaction of transactionHistory" class="history-item">
+        {{ transaction }}
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,46 @@
+<div class="factory-container">
+  <div class="header">
+    <h1>🏭 Patrón FACTORY METHOD</h1>
+    <p class="description">Crea objetos sin que el cliente conozca las clases específicas.</p>
+  </div>
+
+  <div class="section selection-section">
+    <h3>Selecciona un Tipo de Vehículo</h3>
+    <div class="selection-group">
+      <select [(ngModel)]="selectedType" class="select">
+        <option *ngFor="let t of types" [value]="t">{{ t | uppercase }}</option>
+      </select>
+      <button (click)="createVehicle()" class="btn btn-success">
+        <span class="icon">🏭</span>
+        <span>Fabricar</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="section" *ngIf="errorMessage">
+    <div class="error-box">{{ errorMessage }}</div>
+  </div>
+
+  <div class="section" *ngIf="currentVehicle">
+    <h3>Vehículo Creado</h3>
+    <div class="vehicle-card">
+      <div class="vehicle-type">{{ currentVehicle.getType() }}</div>
+      <div class="vehicle-info">
+        <p><strong>Descripción:</strong> {{ currentVehicle.getDescription() }}</p>
+        <p><strong>Velocidad Máxima:</strong> <span class="speed-value">{{ currentVehicle.getMaxSpeed() }}</span> km/h</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" *ngIf="vehicleHistory.length > 0">
+    <h3>🚗 Historial de Vehículos</h3>
+    <div class="vehicle-list">
+      <div *ngFor="let vehicle of vehicleHistory; let i = index" class="vehicle-item">
+        <span class="index">{{ i + 1 }}.</span>
+        <span class="vehicle-name">{{ vehicle.getType() }}</span>
+        <span class="vehicle-speed">{{ vehicle.getMaxSpeed() }} km/h</span>
+      </div>
+    </div>
+    <button (click)="clearHistory()" class="btn btn-small">🗑️ Limpiar Historial</button>
+  </div>
+</div>

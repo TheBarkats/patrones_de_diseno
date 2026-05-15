@@ -5,16 +5,21 @@
  * para acceder a todos los 5 patrones implementados
  */
 
-import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
 
 // Importar todos los componentes de patrones
-import { ComputerBuilderComponent } from './patrones/builder/computer-builder.component';
 import { UserAdapterComponent } from './patrones/adapter/user-adapter.component';
+import { ComputerBuilderComponent } from './patrones/builder/computer-builder.component';
+import { CommandComponent } from './patrones/command/command.component';
+import { SportsFacadeComponent } from './patrones/facade/sports-facade.component';
+import { FactoryMethodComponent } from './patrones/factory-method/factory-method.component';
 import { GameMapComponent } from './patrones/flyweight/game-map.component';
 import { SportsReservationComponent } from './patrones/observer/sports-reservation.component';
-import { SportsFacadeComponent } from './patrones/facade/sports-facade.component';
+import { SingletonComponent } from './patrones/singleton/singleton.component';
+import { StateComponent } from './patrones/state/state.component';
+import { StrategyComponent } from './patrones/strategy/strategy.component';
 
 interface PatternInfo {
   id: string;
@@ -37,6 +42,11 @@ interface PatternInfo {
     GameMapComponent,
     SportsReservationComponent,
     SportsFacadeComponent,
+    SingletonComponent,
+    FactoryMethodComponent,
+    StrategyComponent,
+    StateComponent,
+    CommandComponent,
   ],
   template: `
     <div class="patterns-container">
@@ -44,7 +54,7 @@ interface PatternInfo {
       <header class="header">
         <div class="header-content">
           <h1>🎓 Taller de Patrones de Diseño</h1>
-          <p class="subtitle">Angular + TypeScript - 5 Patrones Implementados</p>
+          <p class="subtitle">Angular + TypeScript - 10 Patrones Implementados</p>
         </div>
       </header>
 
@@ -105,6 +115,51 @@ interface PatternInfo {
             <p>{{ getPatternInfo('facade').description }}</p>
           </div>
           <app-sports-facade></app-sports-facade>
+        </div>
+
+        <!-- SINGLETON -->
+        <div *ngIf="currentPattern === 'singleton'" class="pattern-view">
+          <div class="pattern-header">
+            <h2>{{ getPatternInfo('singleton').title }}</h2>
+            <p>{{ getPatternInfo('singleton').description }}</p>
+          </div>
+          <app-singleton></app-singleton>
+        </div>
+
+        <!-- FACTORY METHOD -->
+        <div *ngIf="currentPattern === 'factory-method'" class="pattern-view">
+          <div class="pattern-header">
+            <h2>{{ getPatternInfo('factory-method').title }}</h2>
+            <p>{{ getPatternInfo('factory-method').description }}</p>
+          </div>
+          <app-factory-method></app-factory-method>
+        </div>
+
+        <!-- STRATEGY -->
+        <div *ngIf="currentPattern === 'strategy'" class="pattern-view">
+          <div class="pattern-header">
+            <h2>{{ getPatternInfo('strategy').title }}</h2>
+            <p>{{ getPatternInfo('strategy').description }}</p>
+          </div>
+          <app-strategy></app-strategy>
+        </div>
+
+        <!-- STATE -->
+        <div *ngIf="currentPattern === 'state'" class="pattern-view">
+          <div class="pattern-header">
+            <h2>{{ getPatternInfo('state').title }}</h2>
+            <p>{{ getPatternInfo('state').description }}</p>
+          </div>
+          <app-state></app-state>
+        </div>
+
+        <!-- COMMAND -->
+        <div *ngIf="currentPattern === 'command'" class="pattern-view">
+          <div class="pattern-header">
+            <h2>{{ getPatternInfo('command').title }}</h2>
+            <p>{{ getPatternInfo('command').description }}</p>
+          </div>
+          <app-command></app-command>
         </div>
 
         <!-- Vista de inicio -->
@@ -425,6 +480,56 @@ export class PatternsComponent implements OnInit {
       emoji: '🎭',
       color: '#f87171',
       component: SportsFacadeComponent,
+    },
+    {
+      id: 'singleton',
+      name: 'Singleton',
+      title: '🔒 SINGLETON - Instancia Única',
+      description:
+        'Garantiza que una clase tenga exactamente una única instancia durante toda la ejecución de la aplicación.',
+      emoji: '🔒',
+      color: '#6366f1',
+      component: SingletonComponent,
+    },
+    {
+      id: 'factory-method',
+      name: 'Factory Method',
+      title: '🏭 FACTORY METHOD - Creación de Objetos',
+      description:
+        'Define una interfaz para crear objetos, pero deja que las subclases decidan qué clase instanciar.',
+      emoji: '🏭',
+      color: '#f59e0b',
+      component: FactoryMethodComponent,
+    },
+    {
+      id: 'strategy',
+      name: 'Strategy',
+      title: '📋 STRATEGY - Algoritmos Intercambiables',
+      description:
+        'Encapsula diferentes algoritmos en objetos separados, permitiendo que se intercambien dinámicamente.',
+      emoji: '📋',
+      color: '#8b5cf6',
+      component: StrategyComponent,
+    },
+    {
+      id: 'state',
+      name: 'State',
+      title: '🎬 STATE - Cambio de Comportamiento',
+      description:
+        'Permite que un objeto cambie su comportamiento cuando su estado interno cambia, como un reproductor multimedia.',
+      emoji: '🎬',
+      color: '#ec4899',
+      component: StateComponent,
+    },
+    {
+      id: 'command',
+      name: 'Command',
+      title: '⌨️ COMMAND - Encapsulación de Acciones',
+      description:
+        'Encapsula solicitudes como objetos, permitiendo undo/redo, colas de comandos y automatización.',
+      emoji: '⌨️',
+      color: '#14b8a6',
+      component: CommandComponent,
     },
   ];
 

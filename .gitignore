@@ -61,3 +61,5 @@ Thumbs.db
 *.launch
 .settings/
 *.sublime-workspace
+".angular/cache/" 
+.angular/cache/
