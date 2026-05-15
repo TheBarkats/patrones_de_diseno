@@ -1,10 +1,43 @@
-<div class="container">
-  <h1>⌨️ Patrón COMMAND</h1>
-  <p>Encapsula acciones como objetos para ejecutar, deshacer o programar.</p>
+<div class="command-container">
+  <div class="remote-section">
+    <h3>🔌 Control Remoto de Luces</h3>
+    
+    <div class="light-indicator" [class.on]="isLightOn">
+      <div class="bulb" [class.on]="isLightOn">💡</div>
+      <p>{{ isLightOn ? 'LUZ ENCENDIDA' : 'LUZ APAGADA' }}</p>
+    </div>
 
-  <button (click)="demonstrate()" class="btn btn-primary">
-    Simular Control Remoto
-  </button>
+    <div class="remote-buttons">
+      <button 
+        (click)="executeCommand('on')" 
+        [disabled]="isLightOn"
+        class="btn btn-on"
+      >
+        ✅ Encender
+      </button>
+      <button 
+        (click)="executeCommand('off')" 
+        [disabled]="!isLightOn"
+        class="btn btn-off"
+      >
+        ❌ Apagar
+      </button>
+      <button (click)="undo()" class="btn btn-undo">↶ Deshacer</button>
+      <button (click)="resetRemote()" class="btn btn-reset">🔄 Reiniciar</button>
+    </div>
+  </div>
 
-  <pre *ngIf="result" class="result">{{ result }}</pre>
+  <div class="history-section">
+    <h3>📜 Historial de Comandos</h3>
+    <p class="counter">Total de comandos ejecutados: {{ historyCount }}</p>
+    
+    <div class="command-list" *ngIf="commandLog.length > 0">
+      <div *ngFor="let log of commandLog" class="command-item">
+        <span class="time">{{ log.time }}</span>
+        <span class="cmd">{{ log.command }}</span>
+        <span class="result">{{ log.result }}</span>
+      </div>
+    </div>
+    <p *ngIf="commandLog.length === 0" class="empty">Sin historial</p>
+  </div>
 </div>

@@ -1,7 +1,46 @@
-.container {
+.command-container {
   padding: 20px;
-  max-width: 800px;
+  max-width: 600px;
   margin: 0 auto;
+}
+
+.controls-section {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  border-left: 4px solid #17a2b8;
+}
+
+.light-indicator {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.bulb {
+  font-size: 4em;
+  transition: 0.3s;
+}
+
+.bulb.on {
+  color: #ffc107;
+  text-shadow: 0 0 20px #ffc107;
+}
+
+.bulb.off {
+  color: #999;
+}
+
+.light-status {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.button-group {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 15px 0;
 }
 
 .btn {
@@ -10,16 +49,69 @@
   border-radius: 4px;
   cursor: pointer;
   font-weight: bold;
-  background-color: #17a2b8;
-  color: white;
-  margin: 20px 0;
+  transition: 0.3s;
 }
 
-.result {
-  background-color: #f8f9fa;
-  border: 1px solid #dee2e6;
-  padding: 15px;
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-on {
+  background: #ffc107;
+  color: #333;
+}
+
+.btn-off {
+  background: #6c757d;
+  color: white;
+}
+
+.btn-undo {
+  background: #28a745;
+  color: white;
+}
+
+.btn-reset {
+  background: #dc3545;
+  color: white;
+}
+
+.history-section {
+  margin-top: 20px;
+}
+
+.command-list {
+  max-height: 200px;
+  overflow-y: auto;
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.command-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  background: white;
+  margin: 5px 0;
   border-radius: 4px;
-  overflow-x: auto;
-  font-family: monospace;
+  font-size: 12px;
+}
+
+.command-time {
+  color: #0066cc;
+  font-weight: bold;
+}
+
+.command-action {
+  color: #666;
+}
+
+.empty {
+  color: #999;
+  font-style: italic;
+  text-align: center;
+  padding: 10px;
 }

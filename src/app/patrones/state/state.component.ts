@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { StateService } from './state.service';
+import { MediaPlayer } from './state.model';
 
 @Component({
   selector: 'app-state',
@@ -10,12 +10,47 @@ import { StateService } from './state.service';
   styleUrls: ['./state.component.css'],
 })
 export class StateComponent {
-  result: string = '';
+  mediaPlayer: MediaPlayer = new MediaPlayer();
+  currentState: string = 'DETENIDO';
+  isPlaying: boolean = false;
+  isPaused: boolean = false;
+  playback: { time: string; state: string; action: string }[] = [];
+  currentTrack: string = 'Canción Ejemplo - Artista';
 
-  constructor(private service: StateService) {}
+  performAction(action: 'play' | 'pause' | 'stop'): void {
+    let result = '';
+    switch (action) {
+      case 'play':
+        result = this.mediaPlayer.play();
+        break;
+      case 'pause':
+        result = this.mediaPlayer.pause();
+        break;
+      case 'stop':
+        result = this.mediaPlayer.stop();
+        break;
+    }
 
-  demonstrate(): void {
-    const log = this.service.demonstrateMediaPlayer();
-    this.result = JSON.stringify(log, null, 2);
+    this.currentState = this.mediaPlayer.getState();
+    this.isPlaying = this.currentState === 'REPRODUCIENDO';
+    this.isPaused = this.currentState === 'PAUSADO';
+
+    this.playback.unshift({
+      time: new Date().toLocaleTimeString(),
+      state: this.currentState,
+      action: result,
+    });
+
+    if (this.playback.length > 10) {
+      this.playback.pop();
+    }
+  }
+
+  resetPlayer(): void {
+    this.mediaPlayer = new MediaPlayer();
+    this.currentState = 'DETENIDO';
+    this.isPlaying = false;
+    this.isPaused = false;
+    this.playback = [];
   }
 }

@@ -1,11 +1,11 @@
 .container {
   padding: 20px;
-  max-width: 800px;
+  max-width: 600px;
   margin: 0 auto;
 }
 
 .controls {
-  margin: 20px 0;
+  margin: 15px 0;
   display: flex;
   gap: 10px;
   align-items: center;
@@ -16,6 +16,7 @@
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 14px;
+  flex: 1;
 }
 
 .btn {
@@ -28,10 +29,57 @@
   color: white;
 }
 
-.result {
-  background-color: #f8f9fa;
-  border: 1px solid #dee2e6;
-  padding: 15px;
+.error {
+  background: #f8d7da;
+  border: 1px solid #f5c6cb;
+  color: #721c24;
+  padding: 12px;
   border-radius: 4px;
-  overflow-x: auto;
+  margin: 10px 0;
+}
+
+.vehicle-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 20px;
+  border-radius: 8px;
+  margin: 15px 0;
+  text-align: center;
+}
+
+.vehicle-type {
+  font-size: 2.5em;
+  margin-bottom: 15px;
+}
+
+.vehicle-info p {
+  margin: 10px 0;
+}
+
+.history {
+  margin-top: 20px;
+}
+
+.vehicle-list {
+  background: #f8f9fa;
+  border-radius: 4px;
+  padding: 10px;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.vehicle-item {
+  padding: 8px;
+  background: white;
+  margin: 5px 0;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.btn-small {
+  padding: 5px 10px;
+  background: #dc3545;
+  color: white;
+  margin-top: 10px;
+  font-size: 12px;
 }

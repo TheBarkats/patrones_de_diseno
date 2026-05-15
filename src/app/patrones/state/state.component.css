@@ -1,7 +1,46 @@
-.container {
+.state-container {
   padding: 20px;
-  max-width: 800px;
+  max-width: 600px;
   margin: 0 auto;
+}
+
+.player-section {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  border-left: 4px solid #dc3545;
+  text-align: center;
+}
+
+.track-info {
+  margin: 15px 0;
+}
+
+.state-indicator {
+  font-size: 1.5em;
+  font-weight: bold;
+  padding: 15px;
+  border-radius: 8px;
+  margin: 10px 0;
+  background: #f0f0f0;
+}
+
+.state-indicator.playing {
+  background: #d4edda;
+  color: #155724;
+}
+
+.state-indicator.paused {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.controls {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 15px 0;
 }
 
 .btn {
@@ -10,15 +49,46 @@
   border-radius: 4px;
   cursor: pointer;
   font-weight: bold;
-  background-color: #dc3545;
-  color: white;
-  margin: 20px 0;
 }
 
-.result {
-  background-color: #f8f9fa;
-  border: 1px solid #dee2e6;
-  padding: 15px;
+.btn-play {
+  background: #28a745;
+  color: white;
+}
+
+.btn-pause {
+  background: #ffc107;
+  color: #333;
+}
+
+.btn-stop {
+  background: #dc3545;
+  color: white;
+}
+
+.btn-reset {
+  background: #6c757d;
+  color: white;
+}
+
+.playback-list {
+  max-height: 200px;
+  overflow-y: auto;
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.playback-item {
+  padding: 8px;
+  background: white;
+  margin: 5px 0;
   border-radius: 4px;
-  overflow-x: auto;
+  font-size: 12px;
+}
+
+.empty {
+  color: #999;
+  font-style: italic;
 }

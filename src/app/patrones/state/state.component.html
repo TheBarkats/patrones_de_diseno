@@ -1,10 +1,48 @@
-<div class="container">
-  <h1>🎬 Patrón STATE</h1>
-  <p>Cambia comportamiento basado en el estado interno del objeto.</p>
+<div class="state-container">
+  <div class="player-section">
+    <h3>🎵 Reproductor Multimedia</h3>
+    
+    <div class="track-info">
+      <p><strong>Canción:</strong> {{ currentTrack }}</p>
+      <div class="state-indicator" [class.playing]="isPlaying" [class.paused]="isPaused">
+        {{ currentState }}
+      </div>
+    </div>
 
-  <button (click)="demonstrate()" class="btn btn-primary">
-    Simular Reproductor Multimedia
-  </button>
+    <div class="controls">
+      <button 
+        (click)="performAction('play')" 
+        [disabled]="isPlaying"
+        class="btn btn-play"
+      >
+        ▶️ Reproducir
+      </button>
+      <button 
+        (click)="performAction('pause')" 
+        [disabled]="!isPlaying"
+        class="btn btn-pause"
+      >
+        ⏸️ Pausar
+      </button>
+      <button 
+        (click)="performAction('stop')" 
+        class="btn btn-stop"
+      >
+        ⏹️ Detener
+      </button>
+      <button (click)="resetPlayer()" class="btn btn-reset">🔄 Reset</button>
+    </div>
+  </div>
 
-  <pre *ngIf="result" class="result">{{ result }}</pre>
+  <div class="playback-section">
+    <h3>📜 Historial de Acciones</h3>
+    <div class="playback-list" *ngIf="playback.length > 0">
+      <div *ngFor="let action of playback" class="playback-item">
+        <span class="time">{{ action.time }}</span>
+        <span class="state">{{ action.state }}</span>
+        <span class="action">{{ action.action }}</span>
+      </div>
+    </div>
+    <p *ngIf="playback.length === 0" class="empty">Sin historial</p>
+  </div>
 </div>

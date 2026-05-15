@@ -3,13 +3,31 @@
   <p>Garantiza una única instancia de una clase durante toda la ejecución.</p>
 
   <div class="controls">
-    <button (click)="testInstances()" class="btn btn-primary">
+    <button (click)="verifyInstance()" class="btn btn-primary">
       Verificar Instancia Única
     </button>
-    <button (click)="demonstrate()" class="btn btn-secondary">
-      Demostración
+    <button (click)="connectDatabase()" [disabled]="isConnected" class="btn btn-success">
+      ✅ Conectar
+    </button>
+    <button (click)="executeQuery('SELECT * FROM usuarios')" [disabled]="!isConnected" class="btn btn-info">
+      🔍 Ejecutar Query
+    </button>
+    <button (click)="disconnectDatabase()" [disabled]="!isConnected" class="btn btn-danger">
+      ❌ Desconectar
     </button>
   </div>
 
-  <pre *ngIf="result" class="result">{{ result }}</pre>
+  <div *ngIf="instanceInfo" class="info-box">
+    <p>{{ instanceInfo.message }}</p>
+    <p><strong>¿Es Singleton?</strong> {{ instanceInfo.sameInstance ? '✅ SI' : '❌ NO' }}</p>
+  </div>
+
+  <p *ngIf="queryResult" class="query-result">{{ queryResult }}</p>
+
+  <div class="history" *ngIf="connections.length > 0">
+    <h3>📜 Historial:</h3>
+    <div *ngFor="let conn of connections" class="history-item">
+      {{ conn.time }} - {{ conn.status }}
+    </div>
+  </div>
 </div>

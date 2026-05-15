@@ -1,14 +1,22 @@
-.container {
+.singleton-container {
   padding: 20px;
-  max-width: 800px;
+  max-width: 600px;
   margin: 0 auto;
 }
 
-.controls {
-  margin: 20px 0;
+.section {
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+  margin: 15px 0;
+  border-left: 4px solid #0066cc;
+}
+
+.button-group {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
+  margin: 10px 0;
 }
 
 .btn {
@@ -17,6 +25,12 @@
   border-radius: 4px;
   cursor: pointer;
   font-weight: bold;
+  transition: 0.3s;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .btn-primary {
@@ -24,15 +38,54 @@
   color: white;
 }
 
-.btn-secondary {
-  background-color: #6c757d;
+.btn-success {
+  background-color: #28a745;
   color: white;
 }
 
-.result {
-  background-color: #f8f9fa;
-  border: 1px solid #dee2e6;
-  padding: 15px;
+.btn-info {
+  background-color: #17a2b8;
+  color: white;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  color: white;
+}
+
+.info-box {
+  background: #e3f2fd;
+  border: 1px solid #0066cc;
+  padding: 12px;
   border-radius: 4px;
-  overflow-x: auto;
+  margin-top: 10px;
+}
+
+.query-result {
+  background: #fff3cd;
+  border: 1px solid #ffc107;
+  padding: 10px;
+  border-radius: 4px;
+  margin-top: 10px;
+}
+
+.history {
+  margin-top: 10px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.history-item {
+  display: flex;
+  gap: 10px;
+  padding: 8px;
+  background: white;
+  border-radius: 4px;
+  margin: 5px 0;
+  font-size: 12px;
+}
+
+.empty {
+  color: #999;
+  font-style: italic;
 }

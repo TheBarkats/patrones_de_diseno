@@ -7,9 +7,27 @@
       <option *ngFor="let t of types" [value]="t">{{ t | uppercase }}</option>
     </select>
     <button (click)="createVehicle()" class="btn btn-primary">
-      Crear Vehículo
+      🏭 Fabricar Vehículo
     </button>
   </div>
 
-  <pre *ngIf="result" class="result">{{ result }}</pre>
+  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+
+  <div *ngIf="currentVehicle" class="vehicle-card">
+    <div class="vehicle-type">{{ currentVehicle.getType() }}</div>
+    <div class="vehicle-info">
+      <p><strong>Descripción:</strong> {{ currentVehicle.getDescription() }}</p>
+      <p><strong>Velocidad Máxima:</strong> {{ currentVehicle.getMaxSpeed() }} km/h</p>
+    </div>
+  </div>
+
+  <div *ngIf="vehicleHistory.length > 0" class="history">
+    <h3>🚗 Vehículos Creados:</h3>
+    <div class="vehicle-list">
+      <div *ngFor="let vehicle of vehicleHistory" class="vehicle-item">
+        {{ vehicle.getType() }} - {{ vehicle.getMaxSpeed() }} km/h
+      </div>
+    </div>
+    <button (click)="clearHistory()" class="btn btn-small">Limpiar</button>
+  </div>
 </div>

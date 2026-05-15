@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { IVehicle } from './factory-method.model';
 import { FactoryMethodService } from './factory-method.service';
 
 @Component({
@@ -13,7 +14,9 @@ import { FactoryMethodService } from './factory-method.service';
 export class FactoryMethodComponent {
   types: string[] = [];
   selectedType: string = '';
-  result: string = '';
+  currentVehicle: IVehicle | null = null;
+  vehicleHistory: IVehicle[] = [];
+  errorMessage: string = '';
 
   constructor(private service: FactoryMethodService) {
     this.types = this.service.getAvailableTypes();
@@ -21,7 +24,23 @@ export class FactoryMethodComponent {
   }
 
   createVehicle(): void {
-    const info = this.service.getVehicleInfo(this.selectedType);
-    this.result = JSON.stringify(info, null, 2);
+    const { vehicle, error } = this.service.createVehicle(this.selectedType);
+    if (error) {
+      this.errorMessage = error;
+      this.currentVehicle = null;
+    } else {
+      this.errorMessage = '';
+      this.currentVehicle = vehicle || null;
+      if (vehicle) {
+        this.vehicleHistory.unshift(vehicle);
+        if (this.vehicleHistory.length > 5) {
+          this.vehicleHistory.pop();
+        }
+      }
+    }
+  }
+
+  clearHistory(): void {
+    this.vehicleHistory = [];
   }
 }
