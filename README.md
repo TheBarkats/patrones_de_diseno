@@ -1,5 +1,15 @@
 # Taller de Patrones de Diseño - Angular + TypeScript
 
+##  Autores
+
+**Taller Universitario de Patrones de Diseño**
+- Arquitectura de Software - VIII Semestre  
+- Unidad Central del Valle - 2026
+
+**Integrantes del Grupo:**
+- Cristpher Arias Contreras (Patrones: Builder, Adapter, Flyweight, Observer, Facade)
+- Juan Camilo Giraldo Amaya (Patrones: Singleton, Factory Method, Strategy, State, Command)
+
 ## Descripción del Proyecto
 
 Este proyecto es un taller que implementa **10 patrones de diseño de software** con ejemplos funcionales y reales en **Angular 17+** con **TypeScript**.
@@ -486,18 +496,6 @@ Una vez la aplicación esté corriendo en `http://localhost:4200`, verás:
 - Los ejemplos son **reales y prácticos**, no triviales
 - Usa **TypeScript strict mode** para máxima seguridad de tipos
 - Compatible con **Angular 17+**
-
----
-
-##  Autores
-
-**Taller Universitario de Patrones de Diseño**
-- Arquitectura de Software - VIII Semestre  
-- Unidad Central del Valle - 2026
-
-**Integrantes del Grupo:**
-- Estudiante 1 (Patrones: Builder, Adapter, Flyweight, Observer, Facade)
-- Estudiante 2 (Patrones: Singleton, Factory Method, Strategy, State, Command)
 
 ---
 
