@@ -1,0 +1,15 @@
+<div class="container">
+  <h1>🏭 Patrón FACTORY METHOD</h1>
+  <p>Crea objetos sin que el cliente conozca las clases específicas.</p>
+
+  <div class="controls">
+    <select [(ngModel)]="selectedType" class="select">
+      <option *ngFor="let t of types" [value]="t">{{ t | uppercase }}</option>
+    </select>
+    <button (click)="createVehicle()" class="btn btn-primary">
+      Crear Vehículo
+    </button>
+  </div>
+
+  <pre *ngIf="result" class="result">{{ result }}</pre>
+</div>
