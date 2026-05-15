@@ -14,6 +14,23 @@ Cada patrón incluye:
 
 ##  Patrones Implementados
 
+### Tabla Resumen de los 10 Patrones
+
+| # | Patrón | Categoría | Propósito | Escenario |
+|---|--------|-----------|----------|-----------|
+| 1 | **Builder** | Creacional | Construcción paso a paso | Computadores Gamer |
+| 2 | **Adapter** | Estructural | Compatibilidad de interfaces | APIs heterogéneas |
+| 3 | **Flyweight** | Estructural | Optimización de memoria | Mapas con miles de objetos |
+| 4 | **Observer** | Comportamiento | Notificaciones uno-a-muchos | Sistema de reservas reactivo |
+| 5 | **Facade** | Estructural | Interfaz unificada | Reservas deportivas complejas |
+| 6 | **Singleton** | Creacional | Instancia única | Conexión a BD centralizada |
+| 7 | **Factory Method** | Creacional | Creación flexible | Fábrica de vehículos |
+| 8 | **Strategy** | Comportamiento | Algoritmos intercambiables | Métodos de pago |
+| 9 | **State** | Comportamiento | Cambio de comportamiento | Reproductor multimedia |
+| 10 | **Command** | Comportamiento | Encapsulación de acciones | Control remoto con undo/redo |
+
+---
+
 ### 1. **BUILDER** - Sistema de Construcción de Computadores Gamer
 **Propósito:** Separar la construcción de un objeto complejo de su representación.
 
@@ -122,6 +139,109 @@ Cada patrón incluye:
 
 ---
 
+### 6. **SINGLETON** - Instancia Única (Creacional)
+**Propósito:** Garantizar que una clase tenga exactamente una única instancia durante toda la ejecución.
+
+**Escenario:** Sistema de base de datos con una única conexión controlada.
+
+**Ubicación:** `src/app/patrones/singleton/`
+
+**Archivos:**
+- `singleton.component.ts` - Componente principal
+- `singleton.service.ts` - Servicio del patrón
+- `singleton.model.ts` - Clase DatabaseConnection
+- `singleton.component.html` - Vista
+- `singleton.component.css` - Estilos
+
+**Ventajas:**
+- Evita duplicación de recursos costosos
+- Garantiza estado centralizado consistente
+- Control de acceso a instancia única
+
+---
+
+### 7. **FACTORY METHOD** - Creación de Objetos (Creacional)
+**Propósito:** Definir una interfaz para crear objetos, permitiendo que subclases decidan qué instanciar.
+
+**Escenario:** Sistema de fabricación de vehículos (Auto, Moto, Camión, Bicicleta).
+
+**Ubicación:** `src/app/patrones/factory-method/`
+
+**Archivos:**
+- `factory-method.component.ts` - Componente principal
+- `factory-method.service.ts` - Servicio del patrón
+- `factory-method.model.ts` - Factory y clases de vehículos
+- `factory-method.component.html` - Vista
+- `factory-method.component.css` - Estilos
+
+**Ventajas:**
+- Desacopla la creación del cliente
+- Facilita agregar nuevos tipos
+- Inversión de control
+
+---
+
+### 8. **STRATEGY** - Algoritmos Intercambiables (Comportamiento)
+**Propósito:** Encapsular diferentes algoritmos permitiendo que se intercambien dinámicamente.
+
+**Escenario:** Sistema de carrito de compras con múltiples métodos de pago.
+
+**Ubicación:** `src/app/patrones/strategy/`
+
+**Archivos:**
+- `strategy.component.ts` - Componente principal
+- `strategy.service.ts` - Servicio del patrón
+- `strategy.model.ts` - Estrategias de pago
+- `strategy.component.html` - Vista
+- `strategy.component.css` - Estilos
+
+**Ventajas:**
+- Evita condicionales largos
+- Algoritmos intercambiables en runtime
+- Respeta principios SOLID
+
+---
+
+### 9. **STATE** - Cambio de Comportamiento (Comportamiento)
+**Propósito:** Permitir que un objeto cambie su comportamiento cuando su estado interno cambia.
+
+**Escenario:** Reproductor multimedia (Play, Pause, Stop).
+
+**Ubicación:** `src/app/patrones/state/`
+
+**Archivos:**
+- `state.component.ts` - Componente principal
+- `state.service.ts` - Servicio del patrón
+- `state.model.ts` - Estados del reproductor
+- `state.component.html` - Vista
+- `state.component.css` - Estilos
+
+**Ventajas:**
+- Encapsula estados en objetos
+- Transiciones claras entre estados
+- Código más legible y mantenible
+
+---
+
+### 10. **COMMAND** - Encapsulación de Acciones (Comportamiento)
+**Propósito:** Encapsular solicitudes como objetos, permitiendo undo/redo y automatización.
+
+**Escenario:** Control remoto de luces con historial de comandos.
+
+**Ubicación:** `src/app/patrones/command/`
+
+**Archivos:**
+- `command.component.ts` - Componente principal
+- `command.service.ts` - Servicio del patrón
+- `command.model.ts` - Comandos y RemoteControl
+- `command.component.html` - Vista
+- `command.component.css` - Estilos
+
+**Ventajas:**
+- Desacopla invocador del receptor
+- Permite undo/redo
+- Colas de comandos y automatización
+
 ##  Estructura del Proyecto
 
 ```
@@ -155,15 +275,50 @@ src/app/patrones/
 │   ├── sports-notification.service.ts
 │   └── reservation.model.ts
 │
-└── facade/
-    ├── sports-facade.component.ts
-    ├── sports-facade.component.html
-    ├── sports-facade.component.css
-    ├── sports-facade.service.ts
-    ├── availability.service.ts
-    ├── payment.service.ts
-    ├── user-validation.service.ts
-    └── facility.model.ts
+├── facade/
+│   ├── sports-facade.component.ts
+│   ├── sports-facade.component.html
+│   ├── sports-facade.component.css
+│   ├── sports-facade.service.ts
+│   ├── availability.service.ts
+│   ├── payment.service.ts
+│   ├── user-validation.service.ts
+│   └── facility.model.ts
+│
+├── singleton/
+│   ├── singleton.component.ts
+│   ├── singleton.component.html
+│   ├── singleton.component.css
+│   ├── singleton.service.ts
+│   └── singleton.model.ts
+│
+├── factory-method/
+│   ├── factory-method.component.ts
+│   ├── factory-method.component.html
+│   ├── factory-method.component.css
+│   ├── factory-method.service.ts
+│   └── factory-method.model.ts
+│
+├── strategy/
+│   ├── strategy.component.ts
+│   ├── strategy.component.html
+│   ├── strategy.component.css
+│   ├── strategy.service.ts
+│   └── strategy.model.ts
+│
+├── state/
+│   ├── state.component.ts
+│   ├── state.component.html
+│   ├── state.component.css
+│   ├── state.service.ts
+│   └── state.model.ts
+│
+└── command/
+    ├── command.component.ts
+    ├── command.component.html
+    ├── command.component.css
+    ├── command.service.ts
+    └── command.model.ts
 ```
 
 ---
@@ -298,11 +453,29 @@ Todos los patrones siguen las definiciones clásicas del Gang of Four (GoF)
 
 ## Cómo Aprender con Este Proyecto
 
-1. **Léa el README de cada patrón**
-2. **Explore el código fuente** y los comentarios
-3. **Ejecute la aplicación** y pruebe cada ejemplo
-4. **Modifique el código** para entender mejor el funcionamiento
-5. **Compare patrones** para identificar sus diferencias
+1. **Ejecuta la aplicación:** `npm start`
+2. **Navega por los patrones:** Usa los botones en la parte superior
+3. **Lee el código:** Cada archivo tiene comentarios explicativos
+4. **Interactúa con los ejemplos:** Haz click en los botones para ver funcionamiento
+5. **Modifica y experimenta:** El mejor aprendizaje es haciendo cambios
+
+### Acceso a los Patrones
+
+Una vez la aplicación esté corriendo en `http://localhost:4200`, verás:
+
+**Patrones Obligatorios (parte 1 del grupo):**
+- 🏗️ **Builder** - Construcción de computadores paso a paso
+- 🔌 **Adapter** - Adaptación de APIs antiguas
+- 💾 **Flyweight** - Optimización de memoria en mapas
+- 👁️ **Observer** - Sistema de notificaciones reactivo
+- 🎭 **Facade** - Simplificación de complejidad
+
+**Patrones Adicionales (parte 2 del grupo):**
+- 🔒 **Singleton** - Garantía de instancia única
+- 🏭 **Factory Method** - Creación flexible de vehículos
+- 📋 **Strategy** - Métodos de pago intercambiables
+- 🎬 **State** - Reproductor multimedia con estados
+- ⌨️ **Command** - Control remoto con undo/redo
 
 ---
 
@@ -318,11 +491,13 @@ Todos los patrones siguen las definiciones clásicas del Gang of Four (GoF)
 
 ##  Autores
 
-Taller Universitario de Patrones de Diseño  
-Arquitectura de Software - VIII Semestre  
-Unidad Central del Valle - 2026
-Cristopher Arias 230222032
-Juan Camilo Giraldo 
+**Taller Universitario de Patrones de Diseño**
+- Arquitectura de Software - VIII Semestre  
+- Unidad Central del Valle - 2026
+
+**Integrantes del Grupo:**
+- Estudiante 1 (Patrones: Builder, Adapter, Flyweight, Observer, Facade)
+- Estudiante 2 (Patrones: Singleton, Factory Method, Strategy, State, Command)
 
 ---
 
