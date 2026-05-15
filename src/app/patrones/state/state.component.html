@@ -1,48 +1,61 @@
 <div class="state-container">
-  <div class="player-section">
+  <div class="header">
+    <h1>🎵 Patrón STATE</h1>
+    <p class="description">Permite cambiar comportamiento según el estado interno.</p>
+  </div>
+
+  <div class="section player-section">
     <h3>🎵 Reproductor Multimedia</h3>
     
     <div class="track-info">
-      <p><strong>Canción:</strong> {{ currentTrack }}</p>
+      <p class="track-label">Canción Actual:</p>
+      <p class="track-name">{{ currentTrack }}</p>
       <div class="state-indicator" [class.playing]="isPlaying" [class.paused]="isPaused">
-        {{ currentState }}
+        <span class="state-dot"></span>
+        <span class="state-text">{{ currentState }}</span>
       </div>
     </div>
 
-    <div class="controls">
+    <div class="button-controls">
       <button 
         (click)="performAction('play')" 
         [disabled]="isPlaying"
         class="btn btn-play"
       >
-        ▶️ Reproducir
+        <span class="icon">▶️</span>
+        <span>Reproducir</span>
       </button>
       <button 
         (click)="performAction('pause')" 
         [disabled]="!isPlaying"
         class="btn btn-pause"
       >
-        ⏸️ Pausar
+        <span class="icon">⏸️</span>
+        <span>Pausar</span>
       </button>
       <button 
         (click)="performAction('stop')" 
         class="btn btn-stop"
       >
-        ⏹️ Detener
+        <span class="icon">⏹️</span>
+        <span>Detener</span>
       </button>
-      <button (click)="resetPlayer()" class="btn btn-reset">🔄 Reset</button>
+      <button (click)="resetPlayer()" class="btn btn-reset">
+        <span class="icon\">🔄</span>
+        <span>Reset</span>
+      </button>
     </div>
   </div>
 
-  <div class="playback-section">
+  <div class="section playback-section">
     <h3>📜 Historial de Acciones</h3>
     <div class="playback-list" *ngIf="playback.length > 0">
       <div *ngFor="let action of playback" class="playback-item">
         <span class="time">{{ action.time }}</span>
-        <span class="state">{{ action.state }}</span>
+        <span class="state-badge">{{ action.state }}</span>
         <span class="action">{{ action.action }}</span>
       </div>
     </div>
-    <p *ngIf="playback.length === 0" class="empty">Sin historial</p>
+    <p *ngIf="playback.length === 0" class="empty">Sin historial aún</p>
   </div>
 </div>

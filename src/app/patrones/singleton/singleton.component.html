@@ -1,33 +1,54 @@
-<div class="container">
-  <h1>🔒 Patrón SINGLETON</h1>
-  <p>Garantiza una única instancia de una clase durante toda la ejecución.</p>
-
-  <div class="controls">
-    <button (click)="verifyInstance()" class="btn btn-primary">
-      Verificar Instancia Única
-    </button>
-    <button (click)="connectDatabase()" [disabled]="isConnected" class="btn btn-success">
-      ✅ Conectar
-    </button>
-    <button (click)="executeQuery('SELECT * FROM usuarios')" [disabled]="!isConnected" class="btn btn-info">
-      🔍 Ejecutar Query
-    </button>
-    <button (click)="disconnectDatabase()" [disabled]="!isConnected" class="btn btn-danger">
-      ❌ Desconectar
-    </button>
+<div class="singleton-container">
+  <div class="header">
+    <h1>🔒 Patrón SINGLETON</h1>
+    <p class="description">Garantiza una única instancia de una clase durante toda la ejecución.</p>
   </div>
 
-  <div *ngIf="instanceInfo" class="info-box">
-    <p>{{ instanceInfo.message }}</p>
-    <p><strong>¿Es Singleton?</strong> {{ instanceInfo.sameInstance ? '✅ SI' : '❌ NO' }}</p>
+  <div class="section controls-section">
+    <h3>Control de Base de Datos</h3>
+    <div class="button-grid">
+      <button (click)="verifyInstance()" class="btn btn-info">
+        <span class="icon">✓</span>
+        <span>Verificar Instancia</span>
+      </button>
+      <button (click)="connectDatabase()" [disabled]="isConnected" class="btn btn-success">
+        <span class="icon">✅</span>
+        <span>Conectar</span>
+      </button>
+      <button (click)="executeQuery('SELECT * FROM usuarios')" [disabled]="!isConnected" class="btn btn-primary">
+        <span class="icon">🔍</span>
+        <span>Ejecutar Query</span>
+      </button>
+      <button (click)="disconnectDatabase()" [disabled]="!isConnected" class="btn btn-danger">
+        <span class="icon">❌</span>
+        <span>Desconectar</span>
+      </button>
+    </div>
   </div>
 
-  <p *ngIf="queryResult" class="query-result">{{ queryResult }}</p>
+  <div class="section" *ngIf="instanceInfo">
+    <h3>Información de Instancia</h3>
+    <div class="info-box">
+      <p>{{ instanceInfo.message }}</p>
+      <div class="singleton-status" [class.verified]="instanceInfo.sameInstance">
+        <strong>¿Es Singleton?</strong> 
+        <span class="badge">{{ instanceInfo.sameInstance ? '✅ SÍ' : '❌ NO' }}</span>
+      </div>
+    </div>
+  </div>
 
-  <div class="history" *ngIf="connections.length > 0">
-    <h3>📜 Historial:</h3>
-    <div *ngFor="let conn of connections" class="history-item">
-      {{ conn.time }} - {{ conn.status }}
+  <div class="section" *ngIf="queryResult">
+    <h3>Resultado de Query</h3>
+    <p class="query-result">{{ queryResult }}</p>
+  </div>
+
+  <div class="section" *ngIf="connections.length > 0">
+    <h3>📜 Historial de Conexiones</h3>
+    <div class="history-list">
+      <div *ngFor="let conn of connections" class="history-item">
+        <span class="time">{{ conn.time }}</span>
+        <span class="status">{{ conn.status }}</span>
+      </div>
     </div>
   </div>
 </div>
