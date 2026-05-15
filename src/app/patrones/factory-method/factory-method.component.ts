@@ -1,8 +1,12 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { FactoryMethodService } from './factory-method.service';
 
 @Component({
   selector: 'app-factory-method',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   templateUrl: './factory-method.component.html',
   styleUrls: ['./factory-method.component.css'],
 })

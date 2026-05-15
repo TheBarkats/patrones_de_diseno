@@ -1,8 +1,11 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { StrategyService } from './strategy.service';
 
 @Component({
   selector: 'app-strategy',
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './strategy.component.html',
   styleUrls: ['./strategy.component.css'],
 })

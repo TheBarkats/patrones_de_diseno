@@ -1,8 +1,11 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { SingletonService } from './singleton.service';
 
 @Component({
   selector: 'app-singleton',
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './singleton.component.html',
   styleUrls: ['./singleton.component.css'],
 })

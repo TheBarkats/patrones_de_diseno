@@ -1,8 +1,11 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { CommandService } from './command.service';
 
 @Component({
   selector: 'app-command',
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './command.component.html',
   styleUrls: ['./command.component.css'],
 })
